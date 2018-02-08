@@ -11,9 +11,9 @@ CON
 
     phasecount=MS_001*10
     
-    phaseZeroIn1=5
-    phaseZeroIn2=6
-    phaseZeroIn3=7
+    phaseZeroIn1=4
+    phaseZeroIn2=5
+    phaseZeroIn3=6
 var
     long generatorstack[32]
 OBJ
@@ -31,36 +31,36 @@ pub generate|phase1off,phase1on,phase2off,phase2on,phase3off,phase3on
     dira[phaseZeroIn2]~~    
     dira[phaseZeroIn3]~~
 
-    outa[phaseZeroIn1]~~
-    outa[phaseZeroIn2]~~
-    outa[phaseZeroIn3]~~        
+    outa[phaseZeroIn1]~
+    outa[phaseZeroIn2]~
+    outa[phaseZeroIn3]~        
     
-    phase1off:=cnt+phasecount
-    phase1on:=phase1off+MS_001
-    phase2off:=phase1off+constant(phasecount/3)
-    phase2on:=phase2off+MS_001
-    phase3off:=phase2off+constant(phasecount/3)
-    phase3on:=phase3off+MS_001
+    phase1on:=cnt+phasecount
+    phase1off:=phase1on+MS_001
+    phase2on:=phase1on+constant(phasecount/3)
+    phase2off:=phase2on+MS_001
+    phase3on:=phase2on+constant(phasecount/3)
+    phase3off:=phase3on+MS_001
     
     repeat
-        waitcnt(phase1off)
-        dira[phaseZeroIn1]~
-        phase1off+=phasecount
         waitcnt(phase1on)
         dira[phaseZeroIn1]~~
         phase1on+=phasecount
+        waitcnt(phase1off)
+        dira[phaseZeroIn1]~
+        phase1off+=phasecount
 
-        waitcnt(phase2off)
+        waitcnt(phase2on)
+        dira[phaseZeroIn2]~~
+        phase2on+=phasecount
+        waitcnt(phase2off)        
         dira[phaseZeroIn2]~        
         phase2off+=phasecount
-        waitcnt(phase2on)        
-        dira[phaseZeroIn2]~~        
-        phase2on+=phasecount
 
-        waitcnt(phase3off)
-        dira[phaseZeroIn3]~        
-        phase3off+=phasecount
-        waitcnt(phase3on)        
-        dira[phaseZeroIn3]~~        
+        waitcnt(phase3on)
+        dira[phaseZeroIn3]~~       
         phase3on+=phasecount
+        waitcnt(phase3off)        
+        dira[phaseZeroIn3]~ 
+        phase3off+=phasecount
         
